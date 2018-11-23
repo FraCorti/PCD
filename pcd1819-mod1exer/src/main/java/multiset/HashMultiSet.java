@@ -87,7 +87,7 @@ public final class HashMultiSet <T, V extends Number> {
 	 * @param source Path: source of the multiset
 	 * */
 	public void buildFromFile(Path source) throws IOException {
-		
+		throw new UnsupportedOperationException();
 	}
 
 	/**
