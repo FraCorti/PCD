@@ -27,7 +27,7 @@ public final class HashMultiSet <T, V extends Number> {
 	 * Sole constructor of the class.
 	 **/
 	
-	public HashMultiSet() { 
+	public HashMultiSet() {
 		multiSet = new HashMap<>();
 	}	
 	/**
@@ -44,10 +44,9 @@ public final class HashMultiSet <T, V extends Number> {
 		V count = multiSet.putIfAbsent(t, (V) freq); 
 		
 		if(count == null) 		
-			return (V) freq;	//torno 1
-		
-		//elemento presente
-		
+			return (V) freq;	//torno 1, ho aggiunto un elemento nuovo con V = 1 (count)
+
+		//elemento già presente
 		Integer newCount = (Integer) count + 1; 	//sommo 1 a count 		
 		multiSet.put(t, (V) newCount); 				//aggiungo count aggiornato 
 		return (V) newCount; 						//torno newCount
@@ -61,7 +60,7 @@ public final class HashMultiSet <T, V extends Number> {
 	 * @return V: true if the element is present, false otherwise.
 	 * */	
 	public boolean isPresent(T t) {
-		return multiSet.containsKey(t); 
+		return multiSet.containsKey(t); 	//controllo se il mio hash ha t
 	}
 	
 	/**
@@ -69,15 +68,14 @@ public final class HashMultiSet <T, V extends Number> {
 	 * @return V: frequency count of parameter t ('0' if not present)
 	 * */
 	public V getElementFrequency(T t) {
-		V elementFrequency = multiSet.get(t); 
-		if(elementFrequency == null) { 
+		V elementFrequency = multiSet.get(t); 	//chiedo il numero di elementi presenti t
+		if(elementFrequency == null) { 			//se è null allora devo castare a V
 			Integer zeroCount = 0; 
 			return (V) zeroCount; 
 		}
-		return elementFrequency; 
+		return elementFrequency; 				//se elementFrequency != null allora lo ritorno
 	}
-	
-	
+
 	/**
 	 * Builds a multiset from a source data file. The source data file contains
 	 * a number comma separated elements. 
@@ -87,15 +85,30 @@ public final class HashMultiSet <T, V extends Number> {
 	 * @param source Path: source of the multiset
 	 * */
 	public void buildFromFile(Path source) throws IOException {
-		throw new UnsupportedOperationException();
+		try (Stream<String> fileStream = Files.lines(source)){		//stream del mio file
+			fileStream.forEach(line ->{
+				String[] items = line.split(",");
+				for (String item : items)
+					addElement((T)item);
+			});
+		}
+		catch(IOException ex) {
+			System.out.print("errore");			//ex.printStackTrace();
+		}
 	}
 
 	/**
 	 * Same as before with the difference being the source type.
 	 * @param source List<T>: source of the multiset
 	 * */
-	public void buildFromCollection(List<? extends T> source) {
-		throw new UnsupportedOperationException();
+	public void buildFromCollection(List<? extends T> source) throws IllegalArgumentException{
+		if(source == null)
+			throw new IllegalArgumentException("Method should be invoked with a non null file path");
+		else {
+			source.forEach((element) -> {
+				addElement(element);
+			});
+		}
 	}
 	
 	/**
@@ -105,8 +118,12 @@ public final class HashMultiSet <T, V extends Number> {
 	 * @return List<T>: linearized version of the multiset represented by this object.
 	 */
 	public List<T> linearize() {
-		throw new UnsupportedOperationException();
+		List<T> myLinearizeList = new ArrayList<T>();
+		multiSet.forEach((element,count) -> {
+				Integer temporalCount = (Integer) count;
+				for(Integer i=0; i != temporalCount ; ++i)
+					myLinearizeList.add(element);
+		});
+		return myLinearizeList;
 	}
-	
-	
 }

@@ -19,7 +19,7 @@ public final class HashUtil {
 	 * 
 	 * @return String: hex representation of the transation hash.
 	 */
-	public static String md5Java(String message) { 
+	public static String md5Java(String message) {
 		String digest = null; 
 		try {
 				MessageDigest md = MessageDigest.getInstance("MD5");
@@ -35,5 +35,6 @@ public final class HashUtil {
 
 		return digest; 
 	}
+
 
 }
