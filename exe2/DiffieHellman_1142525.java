@@ -28,7 +28,7 @@ public class DiffieHellman {
   private static List<Integer> risultati;   // lista che uso per salvare i risultati di tutti i possibili a e b
 
 
-  static void add(int a, int b){
+  static synchronized void add(int a, int b){  // synchronized the access of the Threads
 	risultati.add(a);
 	risultati.add(b);
   }
