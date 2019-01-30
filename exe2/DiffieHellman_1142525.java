@@ -94,7 +94,7 @@ public class DiffieHellman {
     int coresNumber = Runtime.getRuntime().availableProcessors();  // trovo il numero di core nel mio computer
     int partizionamento = LIMIT / coresNumber;		// porzione di numeri da trattare per ogni core
 
-	List<Long> valoriA = IntStream.range(0, LIMIT).mapToObj(i->DiffieHellmanUtils.modPow(publicA, i, p)).collect(Collectors.toList());
+    List<Long> valoriA = IntStream.range(0, LIMIT).mapToObj(i->DiffieHellmanUtils.modPow(publicA, i, p)).collect(Collectors.toList());
     List<MyDiffieHellmanThread> myThreads = new ArrayList<MyDiffieHellmanThread>();
 
 
